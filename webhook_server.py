@@ -3,9 +3,26 @@ import sqlite3
 from datetime import datetime, timedelta
 from fastapi.responses import PlainTextResponse
 
-app = FastAPI()  # Сначала создаём app
+app = FastAPI()
 
 DB_PATH = "users.db"
+
+# ✅ ДОБАВЛЯЕМ: создание таблицы, если не существует
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY,
+            username TEXT,
+            subscription_expires_at TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# ✅ ВЫЗЫВАЕМ при запуске сервера
+init_db()
 
 @app.get("/monobank-webhook")
 async def ping():
