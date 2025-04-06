@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Request 
+from fastapi import FastAPI, Request
 import sqlite3
 from datetime import datetime, timedelta
 from fastapi.responses import PlainTextResponse
 
-app = FastAPI()  # <- ОБЯЗАТЕЛЬНО до использования @app.*
+app = FastAPI()  # Сначала создаём app
 
 DB_PATH = "users.db"
 
