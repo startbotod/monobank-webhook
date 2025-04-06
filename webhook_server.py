@@ -1,6 +1,11 @@
 from fastapi import FastAPI, Request
 import sqlite3
 from datetime import datetime, timedelta
+from fastapi.responses import PlainTextResponse
+
+@app.get("/monobank-webhook")
+async def ping():
+    return PlainTextResponse("OK", status_code=200)
 
 app = FastAPI()
 
@@ -9,6 +14,8 @@ DB_PATH = "users.db"
 @app.post("/monobank-webhook")
 async def monobank_webhook(request: Request):
     data = await request.json()
+    print("Got webhook:", data)
+    return {"status": "received"}
 
     if "invoiceId" in data and "status" in data:
         status = data["status"]
